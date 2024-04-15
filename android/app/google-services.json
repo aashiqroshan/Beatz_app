@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "837167400681",
+    "project_id": "beatz-ca93c",
+    "storage_bucket": "beatz-ca93c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837167400681:android:24bad0d8e52fdd63e65278",
+        "android_client_info": {
+          "package_name": "com.example.beatz_musicplayer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJouBycdvvoT2Bd-caWwiVXdfpLlnORnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
