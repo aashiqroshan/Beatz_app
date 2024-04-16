@@ -8,6 +8,7 @@ class AdminHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MyDrawer(),
+      floatingActionButton: FloatingActionButton(onPressed: () {},child: Icon(Icons.add),),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(25.0),

@@ -1,8 +1,12 @@
+import 'package:beatz_musicplayer/components/bottom_nav.dart';
 import 'package:beatz_musicplayer/components/my_drawer.dart';
 import 'package:beatz_musicplayer/models/song.dart';
 import 'package:beatz_musicplayer/pages/song_page.dart';
+import 'package:beatz_musicplayer/themes/light_mode.dart';
+import 'package:beatz_musicplayer/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,67 +41,68 @@ class _HomeScreenState extends State<HomeScreen> {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          drawer: MyDrawer(),
-          body: Column(
-            children: [
-              Row(
-                children: [
-                  Builder(builder: (context) {
-                    return IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer(); // Opens the drawer
-                      },
-                      icon: Icon(
-                        Icons.person_pin,
-                        size: 50,
-                      ),
-                    );
-                  }),
-                  Text(
-                    'Welcome user!',
-                    style: TextStyle(fontSize: 25),
-                  ),
-                ],
-              ),
-              TabBar(
-                tabs: [
-                  Tab(
-                    text: 'Local songs',
-                  ),
-                  Tab(
-                    text: 'Online',
-                  ),
-                ],
-              ),
-              Expanded(
-                child: TabBarView(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            drawer: MyDrawer(),
+            body: Column(
+              children: [
+                Row(
                   children: [
-                    Consumer<PlaylistProvider>(builder: (context, value, child) {
-        final List<Song> playlist = value.playlist;
-
-        return ListView.builder(
-          itemCount: playlist.length,
-          itemBuilder: (context, index) {
-            final Song song = playlist[index];
-            return ListTile(
-              title: Text(song.songName),
-              subtitle: Text(song.artistName),
-              leading: Image.asset(song.albumArtImagePath),
-              onTap: () => gotoSong(index),
-            );
-          },
-        );
-      }),
-                    Container(
-                      color: Colors.red,
+                    Builder(builder: (context) {
+                      return IconButton(
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer(); // Opens the drawer
+                        },
+                        icon: Icon(
+                          Icons.person_pin,
+                          size: 50,
+                        ),
+                      );
+                    }),
+                    Text(
+                      'Welcome user!',
+                      style: TextStyle(fontSize: 25),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-        ),
+                TabBar(
+                  tabs: [
+                    Tab(
+                      text: 'Local songs',
+                    ),
+                    Tab(
+                      text: 'Online',
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      Consumer<PlaylistProvider>(
+                          builder: (context, value, child) {
+                        final List<Song> playlist = value.playlist;
+
+                        return ListView.builder(
+                          itemCount: playlist.length,
+                          itemBuilder: (context, index) {
+                            final Song song = playlist[index];
+                            return ListTile(
+                              title: Text(song.songName),
+                              subtitle: Text(song.artistName),
+                              leading: Image.asset(song.albumArtImagePath),
+                              onTap: () => gotoSong(index),
+                            );
+                          },
+                        );
+                      }),
+                      Container(
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            bottomNavigationBar: BottomNav()),
       ),
     );
   }
