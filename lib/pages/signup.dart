@@ -1,8 +1,8 @@
+import 'package:beatz_musicplayer/models/firebase_auth_services.dart';
 import 'package:beatz_musicplayer/pages/Homepage.dart';
-import 'package:beatz_musicplayer/user_auth/firebase_authfunction.dart';
+import 'package:beatz_musicplayer/models/firebase_auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -12,16 +12,17 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  FirebaseAuthService _auth = FirebaseAuthService();
+  final FirebaseAuthService _auth = FirebaseAuthService();
+  final _formKey = GlobalKey<FormState>();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passcontroller = TextEditingController();
-  TextEditingController passagaincontroller = TextEditingController();
+  TextEditingController usercontroller = TextEditingController();
 
   @override
   void dispose() {
     emailcontroller.dispose();
     passcontroller.dispose();
-    passagaincontroller.dispose();
+    usercontroller.dispose();
     super.dispose();
   }
 
@@ -47,19 +48,50 @@ class _SignUpState extends State<SignUp> {
                   Spacer()
                 ],
               ),
-              TextField(
-                controller: emailcontroller,
-                decoration: const InputDecoration(labelText: 'Email'),
-              ),
-              TextField(
-                controller: passcontroller,
-                decoration: const InputDecoration(labelText: 'Password'),
-              ),
-              TextField(
-                controller: passagaincontroller,
-                decoration:
-                    const InputDecoration(labelText: 'Confirm Password'),
-              ),
+              Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: usercontroller,
+                        decoration: const InputDecoration(labelText: 'User'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'please enter your username';
+                          }
+                          return null;
+                        },
+                      ),
+                      TextFormField(
+                        controller: emailcontroller,
+                        decoration: const InputDecoration(labelText: 'Email'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'please enter your email';
+                          }
+                          final emailRegex =
+                              RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                          if (!emailRegex.hasMatch(value)) {
+                            return 'please enter a valid email';
+                          }
+                          return null;
+                        },
+                      ),
+                      TextFormField(
+                        controller: passcontroller,
+                        decoration:
+                            const InputDecoration(labelText: 'Password'),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'please enter your password';
+                          }
+
+                          return null;
+                        },
+                      ),
+                    ],
+                  )),
               const SizedBox(
                 height: 20,
               ),
@@ -98,19 +130,22 @@ class _SignUpState extends State<SignUp> {
   }
 
   void signUp() async {
-    String email = emailcontroller.text;
-    String password = passcontroller.text;
+    if (_formKey.currentState!.validate()) {
+      String username = usercontroller.text;
+      String email = emailcontroller.text;
+      String password = passcontroller.text;
 
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
+      User? user = await _auth.signUpWithEmailPassword(email, password);
 
-    if (user != null) {
-      print('user successfully created');
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => HomeScreen(),
-      ));
-    } else {
-      print('some error occured');
+      if (user != null) {
+        print('user successfully created');
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error creating user. please try again')));
+      }
     }
   }
-  
 }

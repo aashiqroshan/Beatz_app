@@ -18,7 +18,7 @@ void main() async {
         create: (context) => PlaylistProvider(),
       )
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 

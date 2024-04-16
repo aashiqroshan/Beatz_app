@@ -1,3 +1,4 @@
+import 'package:beatz_musicplayer/pages/login.dart';
 import 'package:beatz_musicplayer/pages/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,11 +36,11 @@ class _MyDrawerState extends State<MyDrawer> {
           Padding(
             padding: const EdgeInsets.only(left: 25),
             child: ListTile(
-              title: Text('SETTINGS'),
-              leading: Icon(Icons.settings),
+              title: const Text('SETTINGS'),
+              leading: const Icon(Icons.settings),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => Settings(),
+                  builder: (context) => const Settings(),
                 ));
               },
             ),
@@ -49,9 +50,11 @@ class _MyDrawerState extends State<MyDrawer> {
             child: ListTile(
               title: Text('LogOut'),
               leading: const Icon(Icons.logout),
-              onTap: () async {
-                await FirebaseAuth.instance.signOut();
-                setState(() {});
+              onTap: ()  {
+                 FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => LoginScreen(),
+                ));
               },
             ),
           )

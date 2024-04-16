@@ -1,5 +1,7 @@
 import 'package:beatz_musicplayer/pages/Homepage.dart';
+import 'package:beatz_musicplayer/pages/admin_page.dart';
 import 'package:beatz_musicplayer/pages/signup.dart';
+import 'package:beatz_musicplayer/models/firebase_auth_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +13,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseAuthService _auth = FirebaseAuthService();
+  final _formKey = GlobalKey<FormState>();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passcontroller = TextEditingController();
+
+  @override
+  void dispose() {
+    emailcontroller.dispose();
+    passcontroller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,29 +51,41 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Column(
               children: [
-                TextField(
-                  controller: emailcontroller,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextField(
-                  controller: passcontroller,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                ),
+                Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: emailcontroller,
+                          decoration: const InputDecoration(labelText: 'Email'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'please enter your email';
+                            }
+                            final emailRegex =
+                                RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                            if (!emailRegex.hasMatch(value)) {
+                              return 'please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          controller: passcontroller,
+                          decoration:
+                              const InputDecoration(labelText: 'Password'),
+                          obscureText: true,
+                        ),
+                      ],
+                    )),
                 const SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: emailcontroller.text,
-                          password: passcontroller.text);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ));
-                    },
+                    onPressed: signIn,
                     style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(Colors.black),
                         foregroundColor: MaterialStatePropertyAll(Colors.white),
@@ -101,15 +125,30 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     ));
   }
+
+  void signIn() async {
+    if (_formKey.currentState!.validate()) {
+      String email = emailcontroller.text;
+      String password = passcontroller.text;
+
+      if (email == 'admin@gmail.com' && password == 'admin123') {
+        print('admin has logged in');
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => AdminHomePage(),
+        ));
+      } else {
+        User? user = await _auth.signInWithEmailPassword(email, password);
+
+        if (user != null) {
+          print('user successfully signed in');
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error logging in. please try again')));
+        }
+      }
+    }
+  }
 }
-
-// import 'dart:js';
-
-// import 'package:flutter/material.dart';
-// import 'package:beatz/Login_screen.dart';
-
-// Widget loginpage(BuildContext context) {
-
-//   return
-// }
-
