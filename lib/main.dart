@@ -1,4 +1,5 @@
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
+import 'package:beatz_musicplayer/pages/admin_page.dart';
 import 'package:beatz_musicplayer/pages/demo_page.dart';
 import 'package:beatz_musicplayer/pages/splash.dart';
 import 'package:beatz_musicplayer/themes/theme_provider.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: Provider.of<ThemeProvider>(context).themeData,
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const AdminHomePage(),
     );
   }
 }

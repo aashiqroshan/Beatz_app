@@ -47,7 +47,7 @@ class SplashScreen extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => LoginScreen(),
                     ));
                   },

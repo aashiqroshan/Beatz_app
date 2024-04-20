@@ -139,7 +139,7 @@ class _SignUpState extends State<SignUp> {
 
       if (user != null) {
         print('user successfully created');
-        Navigator.of(context).push(MaterialPageRoute(
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => const HomeScreen(),
         ));
       } else {

@@ -52,8 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () {
                           Scaffold.of(context).openDrawer(); // Opens the drawer
                         },
-                        icon: Icon(
-                          Icons.person_pin,
+                        icon: FaIcon(
+                          FontAwesomeIcons.solidCircleUser,
                           size: 50,
                         ),
                       );

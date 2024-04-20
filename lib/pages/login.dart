@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Text('If you dont have one '),
                 TextButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => SignUp(),
                       ));
                     },
@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (user != null) {
           print('user successfully signed in');
-          Navigator.of(context).push(MaterialPageRoute(
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => const HomeScreen(),
           ));
         } else {
