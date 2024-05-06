@@ -1,9 +1,10 @@
-import 'package:beatz_musicplayer/pages/Homepage.dart';
-import 'package:beatz_musicplayer/pages/admin_page.dart';
-import 'package:beatz_musicplayer/pages/signup.dart';
+import 'package:beatz_musicplayer/pages/user/home_page.dart';
+import 'package:beatz_musicplayer/pages/admin/admin_page.dart';
+import 'package:beatz_musicplayer/pages/loginss/signup.dart';
 import 'package:beatz_musicplayer/models/firebase_auth_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -85,7 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 20,
                 ),
                 ElevatedButton(
-                    onPressed: signIn,
+                    onPressed: () {
+                      signIn();
+                      passcontroller.clear();
+                    },
                     style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(Colors.black),
                         foregroundColor: MaterialStatePropertyAll(Colors.white),
@@ -108,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => SignUp(),
+                        builder: (context) => const SignUp(),
                       ));
                     },
                     style: const ButtonStyle(
@@ -134,19 +138,22 @@ class _LoginScreenState extends State<LoginScreen> {
       if (email == 'admin@gmail.com' && password == 'admin123') {
         print('admin has logged in');
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => AdminHomePage(),
+          builder: (context) => const AdminHomePage(),
         ));
       } else {
         User? user = await _auth.signInWithEmailPassword(email, password);
 
         if (user != null) {
+          // final SharedPreferences sharePrefs =
+          //     await SharedPreferences.getInstance();
+          // sharePrefs.setBool('user_logged_in', true);
           print('user successfully signed in');
           Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => const HomeScreen(),
           ));
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error logging in. please try again')));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Error logging in. please try again')));
         }
       }
     }

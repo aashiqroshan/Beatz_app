@@ -1,6 +1,5 @@
 import 'package:beatz_musicplayer/models/firebase_auth_services.dart';
-import 'package:beatz_musicplayer/pages/Homepage.dart';
-import 'package:beatz_musicplayer/models/firebase_auth_services.dart';
+import 'package:beatz_musicplayer/pages/user/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -144,7 +143,7 @@ class _SignUpState extends State<SignUp> {
         ));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error creating user. please try again')));
+            const SnackBar(content: Text('Error creating user. please try again')));
       }
     }
   }

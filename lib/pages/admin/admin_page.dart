@@ -1,5 +1,5 @@
 import 'package:beatz_musicplayer/components/my_drawer.dart';
-import 'package:beatz_musicplayer/pages/add_songs.dart';
+import 'package:beatz_musicplayer/pages/admin/upload_song.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -9,16 +9,16 @@ class AdminHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddSong(),
+                builder: (context) => const AddSong(),
               ));
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: SafeArea(
         child: Padding(
@@ -33,17 +33,17 @@ class AdminHomePage extends StatelessWidget {
                         onPressed: () {
                           Scaffold.of(context).openDrawer();
                         },
-                        icon: FaIcon(
+                        icon: const FaIcon(
                           FontAwesomeIcons.solidCircleUser,
                           size: 50,
                         )),
-                    Text(
+                    const Text(
                       'Welcome Admin',
                       style: TextStyle(fontSize: 20),
                     ),
                     IconButton(
                         onPressed: () {},
-                        icon: FaIcon(
+                        icon: const FaIcon(
                           FontAwesomeIcons.users,
                           size: 30,
                         ))

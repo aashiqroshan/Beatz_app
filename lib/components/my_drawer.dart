@@ -1,4 +1,4 @@
-import 'package:beatz_musicplayer/pages/login.dart';
+import 'package:beatz_musicplayer/pages/loginss/login.dart';
 import 'package:beatz_musicplayer/pages/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class _MyDrawerState extends State<MyDrawer> {
           Padding(
             padding: const EdgeInsets.only(left: 25),
             child: ListTile(
-              title: Text('LogOut'),
+              title: const Text('LogOut'),
               leading: const Icon(Icons.logout),
               onTap: ()  {
                  FirebaseAuth.instance.signOut();

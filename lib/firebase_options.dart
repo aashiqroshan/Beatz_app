@@ -41,49 +41,54 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDIReblupPcQAvrXwwaUIdjaya_G2B3ofU',
-    appId: '1:837167400681:web:1c1702f015f8d31ae65278',
-    messagingSenderId: '837167400681',
-    projectId: 'beatz-ca93c',
-    authDomain: 'beatz-ca93c.firebaseapp.com',
-    storageBucket: 'beatz-ca93c.appspot.com',
-    measurementId: 'G-L1W9HYGXKZ',
+    apiKey: 'AIzaSyCYoY1QevySIuhnY1ao_SuWgMXrvIfuPeY',
+    appId: '1:598457195974:web:738e9a2ba64c5b4c16a6c7',
+    messagingSenderId: '598457195974',
+    projectId: 'beatz-music-app',
+    authDomain: 'beatz-music-app.firebaseapp.com',
+    databaseURL: 'https://beatz-music-app-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'beatz-music-app.appspot.com',
+    measurementId: 'G-TRDT1NTGBY',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAJouBycdvvoT2Bd-caWwiVXdfpLlnORnA',
-    appId: '1:837167400681:android:24bad0d8e52fdd63e65278',
-    messagingSenderId: '837167400681',
-    projectId: 'beatz-ca93c',
-    storageBucket: 'beatz-ca93c.appspot.com',
+    apiKey: 'AIzaSyBfKAa2DJHKkEOH4LDO4qUGsHyPbNBoIXM',
+    appId: '1:598457195974:android:88eafa02ff05993516a6c7',
+    messagingSenderId: '598457195974',
+    projectId: 'beatz-music-app',
+    databaseURL: 'https://beatz-music-app-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'beatz-music-app.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC169eXWWP5f17Vr-BfJGG919aQs7hbQwc',
-    appId: '1:837167400681:ios:01d73af0494a859be65278',
-    messagingSenderId: '837167400681',
-    projectId: 'beatz-ca93c',
-    storageBucket: 'beatz-ca93c.appspot.com',
+    apiKey: 'AIzaSyDN1G7oiWIQY0cR-Gb-4KrLIbyGjQsgJ_g',
+    appId: '1:598457195974:ios:7c011ee7f332bc5d16a6c7',
+    messagingSenderId: '598457195974',
+    projectId: 'beatz-music-app',
+    databaseURL: 'https://beatz-music-app-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'beatz-music-app.appspot.com',
     iosBundleId: 'com.example.beatzMusicplayer',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC169eXWWP5f17Vr-BfJGG919aQs7hbQwc',
-    appId: '1:837167400681:ios:01d73af0494a859be65278',
-    messagingSenderId: '837167400681',
-    projectId: 'beatz-ca93c',
-    storageBucket: 'beatz-ca93c.appspot.com',
+    apiKey: 'AIzaSyDN1G7oiWIQY0cR-Gb-4KrLIbyGjQsgJ_g',
+    appId: '1:598457195974:ios:7c011ee7f332bc5d16a6c7',
+    messagingSenderId: '598457195974',
+    projectId: 'beatz-music-app',
+    databaseURL: 'https://beatz-music-app-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'beatz-music-app.appspot.com',
     iosBundleId: 'com.example.beatzMusicplayer',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDIReblupPcQAvrXwwaUIdjaya_G2B3ofU',
-    appId: '1:837167400681:web:790a6eb220f77cb5e65278',
-    messagingSenderId: '837167400681',
-    projectId: 'beatz-ca93c',
-    authDomain: 'beatz-ca93c.firebaseapp.com',
-    storageBucket: 'beatz-ca93c.appspot.com',
-    measurementId: 'G-D0TBPTF8EE',
+    apiKey: 'AIzaSyCYoY1QevySIuhnY1ao_SuWgMXrvIfuPeY',
+    appId: '1:598457195974:web:a53cf2242b7ecc8c16a6c7',
+    messagingSenderId: '598457195974',
+    projectId: 'beatz-music-app',
+    authDomain: 'beatz-music-app.firebaseapp.com',
+    databaseURL: 'https://beatz-music-app-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'beatz-music-app.appspot.com',
+    measurementId: 'G-VH96LX9LFC',
   );
 
 }

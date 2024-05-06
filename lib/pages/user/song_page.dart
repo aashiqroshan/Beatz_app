@@ -1,7 +1,5 @@
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class SongPage extends StatelessWidget {
@@ -23,7 +21,7 @@ class SongPage extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.background,
           body: SafeArea(
               child: Padding(
-            padding: EdgeInsets.only(left: 25, right: 25, bottom: 25),
+            padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -34,9 +32,9 @@ class SongPage extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        icon: Icon(Icons.arrow_back)),
-                    Text('PLAYER'),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.menu))
+                        icon: const Icon(Icons.arrow_back)),
+                    const Text('PLAYER'),
+                    IconButton(onPressed: () {}, icon: const Icon(Icons.menu))
                   ],
                 ),
                 // SizedBox(
@@ -52,7 +50,7 @@ class SongPage extends StatelessWidget {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 5,
                             blurRadius: 7,
-                            offset: Offset(0, 3))
+                            offset: const Offset(0, 3))
                       ]),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
@@ -78,7 +76,7 @@ class SongPage extends StatelessWidget {
                           Text(currentSong.artistName)
                         ],
                       ),
-                      Icon(
+                      const Icon(
                         Icons.favorite,
                         color: Colors.red,
                       )
@@ -100,7 +98,7 @@ class SongPage extends StatelessWidget {
                 SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                         thumbShape:
-                            RoundSliderThumbShape(enabledThumbRadius: 5)),
+                            const RoundSliderThumbShape(enabledThumbRadius: 5)),
                     child: Slider(
                       min: 0,
                       max: value.totalDuration.inSeconds.toDouble(),
@@ -115,7 +113,7 @@ class SongPage extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: value.playPreviousSong,
-                        child: Icon(
+                        child: const Icon(
                           Icons.skip_previous,
                           size: 50,
                         ),
@@ -125,7 +123,7 @@ class SongPage extends StatelessWidget {
                       child: GestureDetector(
                         onTap: value.pauseOrResume,
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               color: Colors.black, shape: BoxShape.circle),
                           height: 80,
                           width: 80,
@@ -140,7 +138,7 @@ class SongPage extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: value.playNextSong,
-                        child: Icon(
+                        child: const Icon(
                           Icons.skip_next,
                           size: 50,
                         ),
@@ -148,7 +146,7 @@ class SongPage extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 )
               ],

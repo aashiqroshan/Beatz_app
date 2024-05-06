@@ -9,17 +9,17 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SETTINGS'),
+        title: const Text('SETTINGS'),
       ),
       body: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondary,
             borderRadius: BorderRadius.circular(12)),
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.all(25),
+        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(25),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Dark Mode',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),

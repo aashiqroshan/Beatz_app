@@ -1,9 +1,22 @@
-import 'package:beatz_musicplayer/pages/login.dart';
+import 'package:beatz_musicplayer/main.dart';
+import 'package:beatz_musicplayer/pages/loginss/login.dart';
+import 'package:beatz_musicplayer/pages/user/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    checkloggedIn();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,5 +81,16 @@ class SplashScreen extends StatelessWidget {
         )
       ])),
     );
+  }
+
+  Future<void> checkloggedIn() async {
+    final sharedprefs = await SharedPreferences.getInstance();
+    final bool? userloggedin = sharedprefs.getBool('user_logged_in');
+    if (userloggedin == null || userloggedin ) {
+    } else {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const HomeScreen(),
+      ));
+    }
   }
 }
