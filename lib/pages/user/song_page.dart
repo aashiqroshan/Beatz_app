@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -54,8 +56,9 @@ class SongPage extends StatelessWidget {
                       ]),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      currentSong.albumArtImagePath,
+                    child: Image.file(
+                      File(currentSong.albumArtImagePath,
+                      ),
                       fit: BoxFit.fill,
                     ),
                   ),

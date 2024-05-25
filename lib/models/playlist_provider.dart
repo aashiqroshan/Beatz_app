@@ -1,25 +1,32 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:beatz_musicplayer/models/song.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class PlaylistProvider extends ChangeNotifier {
-  final List<Song> _playlist = [
-    Song(
-        songName: 'StarBoy',
-        artistName: 'The Weeknd',
-        albumArtImagePath: 'assets/images/starboy.jpeg',
-        audioPath: 'audio/starboy.mp3'),
-    Song(
-        songName: 'Husn',
-        artistName: 'anuv jain',
-        albumArtImagePath: 'assets/images/husn.jpeg',
-        audioPath: 'audio/starboy.mp3'),
-    Song(
-        songName: 'Dhundhala',
-        artistName: 'yashraj, Dropped Out, Talwiinder',
-        albumArtImagePath: 'assets/images/dhundhala.jpeg',
-        audioPath: 'audio/dhundhala.mp3')
-  ];
+  late final Box<Song> _songBox;
+
+  // final List<Song> _playlist = [
+  //   Song(
+  //       songName: 'StarBoy',
+  //       artistName: 'The Weeknd',
+  //       albumArtImagePath: 'assets/images/starboy.jpeg',
+  //       audioPath: 'audio/starboy.mp3'),
+  //   Song(
+  //       songName: 'Husn',
+  //       artistName: 'anuv jain',
+  //       albumArtImagePath: 'assets/images/husn.jpeg',
+  //       audioPath: 'audio/starboy.mp3'),
+  //   Song(
+  //       songName: 'Dhundhala',
+  //       artistName: 'yashraj, Dropped Out, Talwiinder',
+  //       albumArtImagePath: 'assets/images/dhundhala.jpeg',
+  //       audioPath: 'audio/dhundhala.mp3')
+  // ];
+
+//this is where the songs will be saved
+  final List<Song> _playlist = [];
 
   int? _currentSongIndex;
 
@@ -29,17 +36,27 @@ class PlaylistProvider extends ChangeNotifier {
   Duration _totalDuration = Duration.zero;
 
   PlaylistProvider() {
+    _init();
     listenToDuration();
   }
 
   bool _isPlaying = false;
 
-  void play() async {
-    final String path = _playlist[_currentSongIndex!].audioPath;
-    await _audioPlayer.stop();
-    await _audioPlayer.play(AssetSource(path));
-    _isPlaying = true;
+  void _init() async {
+    _songBox = Hive.box<Song>('Box');
+    _playlist.addAll(_songBox.values.toList());
     notifyListeners();
+  }
+
+  void play() async {
+    if (_currentSongIndex != null) {
+      final String path = _playlist[_currentSongIndex!].audioPath;
+      debugPrint('Playing song from path: $path');
+      await _audioPlayer.stop();
+      await _audioPlayer.play(DeviceFileSource(path));
+      _isPlaying = true;
+    notifyListeners();
+    }
   }
 
   void pause() async {
@@ -100,6 +117,11 @@ class PlaylistProvider extends ChangeNotifier {
     _audioPlayer.onPlayerComplete.listen((event) {
       playNextSong();
     });
+  }
+
+  Future<List<Song>> getAllSongs() async {
+    final List<Song> songs = _songBox.values.cast<Song>().toList();
+    return songs;
   }
 
   List<Song> get playlist => _playlist;

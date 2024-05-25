@@ -53,7 +53,7 @@ class _MyDrawerState extends State<MyDrawer> {
               onTap: ()  {
                  FirebaseAuth.instance.signOut();
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => LoginScreen(),
+                  builder: (context) => const LoginScreen(),
                 ));
               },
             ),

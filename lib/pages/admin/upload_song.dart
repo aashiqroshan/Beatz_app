@@ -20,6 +20,7 @@ class _AddSongState extends State<AddSong> {
   final TextEditingController artistController = TextEditingController();
   final TextEditingController genreController = TextEditingController();
   final TextEditingController lyricsController = TextEditingController();
+  final TextEditingController languageController = TextEditingController();
   late String imagepath;
   late String audiopath;
   final List<String> genres = [
@@ -37,6 +38,7 @@ class _AddSongState extends State<AddSong> {
     required String title,
     required String artist,
     required String genre,
+    required String lanuage,
     required String lyrics,
     required String imagePath,
     required String audioPath,
@@ -61,6 +63,7 @@ class _AddSongState extends State<AddSong> {
       'title': title,
       'artist': artist,
       'genre': genre,
+      'language': lanuage,
       'lyrics': lyrics,
       'imageUrl': imageUrl,
       'audioUrl': audioUrl,
@@ -129,6 +132,15 @@ class _AddSongState extends State<AddSong> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5))),
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
+                TextField(
+                    controller: languageController,
+                    decoration: InputDecoration(
+                        label: const Text('Song Language'),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5)))),
                 const SizedBox(
                   height: 30,
                 ),
@@ -218,12 +230,14 @@ class _AddSongState extends State<AddSong> {
                                 title: titleController.text,
                                 artist: artistController.text,
                                 genre: genreController.text,
+                                lanuage: languageController.text,
                                 lyrics: lyricsController.text,
                                 imagePath: imagepath,
                                 audioPath: audiopath);
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text('upload successful')));
+                            Navigator.of(context).pop();
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String password = passcontroller.text;
 
       if (email == 'admin@gmail.com' && password == 'admin123') {
-        print('admin has logged in');
+        debugPrint('admin has logged in');
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => const AdminHomePage(),
         ));
@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
           // final SharedPreferences sharePrefs =
           //     await SharedPreferences.getInstance();
           // sharePrefs.setBool('user_logged_in', true);
-          print('user successfully signed in');
+          debugPrint('user successfully signed in');
           Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => const HomeScreen(),
           ));

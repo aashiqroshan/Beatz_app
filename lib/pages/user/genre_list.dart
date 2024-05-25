@@ -13,7 +13,7 @@ class GenreList extends StatefulWidget {
 class _GenreListState extends State<GenreList> {
   @override
   void initState() {
-    print("genre = ${widget.genre}");
+    debugPrint("genre = ${widget.genre}");
     super.initState();
   }
 

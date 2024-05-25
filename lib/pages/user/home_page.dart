@@ -1,11 +1,16 @@
-import 'package:beatz_musicplayer/components/bottom_nav.dart';
+import 'dart:io';
+
 import 'package:beatz_musicplayer/components/my_drawer.dart';
+import 'package:beatz_musicplayer/components/showdialoguebox.dart';
 import 'package:beatz_musicplayer/models/song.dart';
+import 'package:beatz_musicplayer/pages/user/offline_fav.dart';
+import 'package:beatz_musicplayer/pages/user/offline_search.dart';
 import 'package:beatz_musicplayer/pages/user/song_page.dart';
-import 'package:beatz_musicplayer/pages/user/library.dart';
 import 'package:flutter/material.dart';
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,16 +21,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final dynamic playlistProvider;
+  late Box<Song> songBox;
+  late Box<String> favoriteBox;
+  late PlaylistProvider playlistProvider;
 
   @override
   void initState() {
     super.initState();
-    playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
+    songBox = Hive.box<Song>('Box');
+    favoriteBox = Hive.box<String>('favBox');
+    Future.delayed(Duration.zero, () {
+      playlistProvider = Provider.of<PlaylistProvider>(context, listen: false);
+    });
   }
 
   void gotoSong(int songIndex) {
     playlistProvider.currentSongIndex = songIndex;
+    playlistProvider.play();
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -33,124 +45,127 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
+  void toggleFavorite(String songId) {
+    setState(() {
+      if (favoriteBox.containsKey(songId)) {
+        favoriteBox.delete(songId);
+      } else {
+        favoriteBox.put(songId, songId);
+      }
+    });
+  }
+
+  bool isFavorite(String songId) {
+    return favoriteBox.containsKey(songId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            drawer: const MyDrawer(),
-            body: Column(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        drawer: const MyDrawer(),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const FavOffline(),
+                ));
+              },
+              child: const Icon(Icons.favorite),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                showAddSongDialog(context);
+              },
+              child: const Icon(Icons.upload),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const OfflineSearch(),
+                ));
+              },
+              child: const Icon(Icons.search),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    Builder(builder: (context) {
-                      return IconButton(
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer(); // Opens the drawer
-                        },
-                        icon: const FaIcon(
-                          FontAwesomeIcons.solidCircleUser,
-                          size: 50,
-                        ),
-                      );
-                    }),
-                    const Text(
-                      'Welcome user!',
-                      style: TextStyle(fontSize: 25),
+                Builder(builder: (context) {
+                  return IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer(); // Opens the drawer
+                    },
+                    icon: const FaIcon(
+                      FontAwesomeIcons.solidCircleUser,
+                      size: 50,
                     ),
-                  ],
-                ),
-                const TabBar(
-                  tabs: [
-                    Tab(
-                      text: 'Local songs',
-                    ),
-                    Tab(
-                      text: 'Online',
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      Consumer<PlaylistProvider>(
-                          builder: (context, value, child) {
-                        final List<Song> playlist = value.playlist;
-
-                        return ListView.builder(
-                          itemCount: playlist.length,
-                          itemBuilder: (context, index) {
-                            final Song song = playlist[index];
-                            return ListTile(
-                              title: Text(song.songName),
-                              subtitle: Text(song.artistName),
-                              leading: Image.asset(song.albumArtImagePath),
-                              onTap: () => gotoSong(index),
-                            );
-                          },
-                        );
-                      }),
-                      Container(
-                        child: Column(
-                          children: [
-                           const  SizedBox(
-                              height: 30,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ElevatedButton.icon(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.favorite,
-                                      size: 50,
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                        minimumSize: const Size(180, 100),
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .inversePrimary,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                    label: const Text(
-                                      'Liked \nSongs',
-                                      style: TextStyle(fontSize: 18),
-                                    )),
-                                ElevatedButton.icon(
-                                    onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LibraryPage(),));
-                                    },
-                                    icon: const Icon(
-                                      Icons.music_note,
-                                      size: 50,
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                        minimumSize: const  Size(180, 100),
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .inversePrimary,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                    label: const Text(
-                                      'Explore \nGenres',
-                                      style: TextStyle(fontSize: 18),
-                                    ))
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  );
+                }),
+                const Text(
+                  'Welcome user!',
+                  style: TextStyle(fontSize: 25),
                 ),
               ],
             ),
-            bottomNavigationBar: const BottomNav()),
+            Expanded(
+              child: ValueListenableBuilder(
+                  valueListenable: songBox.listenable(),
+                  builder: (context, Box<Song> box, _) {
+                    if (box.values.isEmpty) {
+                      return const Center(
+                        child: Text('No songs added yet!'),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: box.length,
+                      itemBuilder: (context, index) {
+                        {
+                          final Song song = box.getAt(index) as Song;
+                          return ListTile(
+                              title: Text(song.songName),
+                              subtitle: Text(song.artistName),
+                              leading: Image.file(
+                                File(song.albumArtImagePath),
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
+                              onTap: () => gotoSong(index),
+                              trailing: IconButton(
+                                onPressed: () => toggleFavorite(song.songName),    
+                            icon: Icon(
+                              isFavorite(song.songName) ? Icons.favorite : Icons.favorite_border,
+                              color: isFavorite(song.songName) ? Colors.red : null,
+                            ),
+                              ));
+                        }
+                      },
+                    );
+                  }),
+            ),
+          ],
+        ),
+        // bottomNavigationBar: const BottomNavi()),
       ),
+    );
+  }
+
+  void showAddSongDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => const AddSongBox(),
     );
   }
 }
