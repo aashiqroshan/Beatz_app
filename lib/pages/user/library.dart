@@ -1,5 +1,4 @@
-import 'package:beatz_musicplayer/pages/user/all_songs_page.dart';
-import 'package:beatz_musicplayer/pages/user/genre_list.dart';
+import 'package:beatz_musicplayer/pages/user/online/all_songs_page.dart';
 import 'package:flutter/material.dart';
 
 class LibraryPage extends StatelessWidget {
@@ -53,11 +52,11 @@ class LibraryPage extends StatelessWidget {
               final String image = genres[index]['image'];
               return GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GenreList(genre: name),
-                      ));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => GenreList(genre: name),
+                  //     ));
                 },
                 child: Card(
                   color: Theme.of(context).colorScheme.background,

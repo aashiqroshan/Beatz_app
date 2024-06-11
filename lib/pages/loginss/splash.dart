@@ -1,6 +1,6 @@
 import 'package:beatz_musicplayer/main.dart';
 import 'package:beatz_musicplayer/pages/loginss/login.dart';
-import 'package:beatz_musicplayer/pages/user/home_page.dart';
+import 'package:beatz_musicplayer/pages/user/offline/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,9 +1,9 @@
-import 'package:beatz_musicplayer/pages/user/all_songs_page.dart';
-import 'package:beatz_musicplayer/pages/user/home_page.dart';
+import 'package:beatz_musicplayer/pages/user/online/all_songs_page.dart';
+import 'package:beatz_musicplayer/pages/user/offline/home_page.dart';
 import 'package:beatz_musicplayer/pages/user/library.dart';
-import 'package:beatz_musicplayer/pages/user/online_player_screen.dart';
-import 'package:beatz_musicplayer/pages/user/online_playlist.dart';
-import 'package:beatz_musicplayer/pages/user/search.dart';
+import 'package:beatz_musicplayer/pages/user/online/online_player_screen.dart';
+import 'package:beatz_musicplayer/pages/user/online/online_playlist.dart';
+import 'package:beatz_musicplayer/pages/user/online/search.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';

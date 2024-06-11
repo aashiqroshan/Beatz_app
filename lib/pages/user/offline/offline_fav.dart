@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:beatz_musicplayer/models/song.dart';
-import 'package:beatz_musicplayer/pages/user/song_page.dart';
+import 'package:beatz_musicplayer/pages/user/offline/song_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -17,6 +17,7 @@ class FavOffline extends StatefulWidget {
 
 class _FavOfflineState extends State<FavOffline> {
   late PlaylistProvider playlistProvider;
+  late Box<String> favoriteBox;
 
   void gotoSong(int songIndex) {
     playlistProvider.currentSongIndex = songIndex;
@@ -28,8 +29,23 @@ class _FavOfflineState extends State<FavOffline> {
         ));
   }
 
+  void toggleFav(String songId) {
+    setState(() {
+      if (favoriteBox.containsKey(songId)) {
+        favoriteBox.delete(songId);
+      } else {
+        favoriteBox.put(songId, songId);
+      }
+    });
+  }
+
+  bool isfav(String songId) {
+    return favoriteBox.containsKey(songId);
+  }
+
   @override
   void initState() {
+    favoriteBox = Hive.box<String>('favBox');
     Future.delayed(
       Duration.zero,
       () {
@@ -82,6 +98,14 @@ class _FavOfflineState extends State<FavOffline> {
                 onTap: () {
                   gotoSong(index);
                 },
+                trailing: IconButton(
+                    onPressed: () => toggleFav(song.songName),
+                    icon: Icon(
+                      isfav(song.songName)
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: isfav(song.songName) ? Colors.red : null,
+                    )),
               );
             },
           );

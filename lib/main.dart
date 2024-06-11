@@ -1,10 +1,8 @@
 import 'package:beatz_musicplayer/components/bottm_navigator.dart';
+import 'package:beatz_musicplayer/firebase_options.dart';
+import 'package:beatz_musicplayer/models/firebase_playlist_provider.dart';
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:beatz_musicplayer/models/song.dart';
-import 'package:beatz_musicplayer/pages/admin/admin_page.dart';
-import 'package:beatz_musicplayer/pages/loginss/splash.dart';
-import 'package:beatz_musicplayer/pages/user/home_page.dart';
-import 'package:beatz_musicplayer/pages/user/online_playlist.dart';
 import 'package:beatz_musicplayer/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -18,7 +16,9 @@ void main() async {
   Hive.registerAdapter(SongAdapter());
   await Hive.openBox<Song>('Box');
   await Hive.openBox<String>('favBox');
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(
     MultiProvider(
       providers: [
@@ -28,6 +28,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => PlaylistProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => FirebasePlaylistProvider(),
+        )
       ],
       child: const MyApp(),
     ),

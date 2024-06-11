@@ -1,5 +1,6 @@
+import 'package:beatz_musicplayer/components/bottm_navigator.dart';
 import 'package:beatz_musicplayer/models/firebase_auth_services.dart';
-import 'package:beatz_musicplayer/pages/user/home_page.dart';
+import 'package:beatz_musicplayer/pages/user/offline/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -139,7 +140,7 @@ class _SignUpState extends State<SignUp> {
       if (user != null) {
         print('user successfully created');
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
+          builder: (context) => const BottomNavi(),
         ));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

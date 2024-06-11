@@ -1,4 +1,5 @@
-import 'package:beatz_musicplayer/pages/user/home_page.dart';
+import 'package:beatz_musicplayer/components/bottm_navigator.dart';
+import 'package:beatz_musicplayer/pages/user/offline/home_page.dart';
 import 'package:beatz_musicplayer/pages/admin/admin_page.dart';
 import 'package:beatz_musicplayer/pages/loginss/signup.dart';
 import 'package:beatz_musicplayer/models/firebase_auth_services.dart';
@@ -147,9 +148,9 @@ class _LoginScreenState extends State<LoginScreen> {
           // final SharedPreferences sharePrefs =
           //     await SharedPreferences.getInstance();
           // sharePrefs.setBool('user_logged_in', true);
-          debugPrint('user successfully signed in');
+          debugPrint('user successfully signed in: ${user.uid}');
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) => const BottomNavi(),
           ));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
