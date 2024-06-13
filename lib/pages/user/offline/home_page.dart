@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:beatz_musicplayer/components/my_drawer.dart';
 import 'package:beatz_musicplayer/components/showdialoguebox.dart';
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/song.dart';
 import 'package:beatz_musicplayer/pages/user/offline/offline_fav.dart';
+import 'package:beatz_musicplayer/pages/user/offline/offline_playlist.dart';
 import 'package:beatz_musicplayer/pages/user/offline/offline_search.dart';
 import 'package:beatz_musicplayer/pages/user/offline/song_page.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final Refactor refactor = Refactor();
   late Box<Song> songBox;
   late Box<String> favoriteBox;
   late PlaylistProvider playlistProvider;
@@ -68,34 +71,62 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const FavOffline(),
-                ));
-              },
-              child: const Icon(Icons.favorite),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            FloatingActionButton(
-              onPressed: () {
-                showAddSongDialog(context);
-              },
-              child: const Icon(Icons.upload),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const OfflineSearch(),
-                ));
-              },
-              child: const Icon(Icons.search),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          showAddSongDialog(context);
+                        },
+                        child: const Icon(Icons.upload),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const OfflineSearch(),
+                          ));
+                        },
+                        child: const Icon(Icons.search),
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const FavOffline(),
+                        ));
+                      },
+                      child: const Icon(Icons.favorite),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    FloatingActionButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const OfflinePlaylist(),
+                              ));
+                        },
+                        child: const FaIcon(FontAwesomeIcons.headphones))
+                  ],
+                )
+              ],
+            )
           ],
         ),
         body: Column(
@@ -133,23 +164,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         {
                           final Song song = box.getAt(index) as Song;
-                          return ListTile(
-                              title: Text(song.songName),
-                              subtitle: Text(song.artistName),
-                              leading: Image.file(
-                                File(song.albumArtImagePath),
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.cover,
-                              ),
-                              onTap: () => gotoSong(index),
-                              trailing: IconButton(
-                                onPressed: () => toggleFavorite(song.songName),    
-                            icon: Icon(
-                              isFavorite(song.songName) ? Icons.favorite : Icons.favorite_border,
-                              color: isFavorite(song.songName) ? Colors.red : null,
-                            ),
-                              ));
+                          return refactor.offlineListview(
+                              song: song,
+                              index: index,
+                              goto: gotoSong,
+                              toggle: toggleFavorite,
+                              isFav: isFavorite);
                         }
                       },
                     );
@@ -157,7 +177,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        // bottomNavigationBar: const BottomNavi()),
       ),
     );
   }

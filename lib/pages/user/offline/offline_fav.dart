@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:beatz_musicplayer/models/song.dart';
 import 'package:beatz_musicplayer/pages/user/offline/song_page.dart';
@@ -16,6 +17,7 @@ class FavOffline extends StatefulWidget {
 }
 
 class _FavOfflineState extends State<FavOffline> {
+  final Refactor refactor = Refactor();
   late PlaylistProvider playlistProvider;
   late Box<String> favoriteBox;
 
@@ -86,27 +88,12 @@ class _FavOfflineState extends State<FavOffline> {
             itemCount: favoriteSongs.length,
             itemBuilder: (context, index) {
               final Song song = favoriteSongs[index];
-              return ListTile(
-                title: Text(song.songName),
-                subtitle: Text(song.artistName),
-                leading: Image.file(
-                  File(song.albumArtImagePath),
-                  fit: BoxFit.cover,
-                  width: 50,
-                  height: 50,
-                ),
-                onTap: () {
-                  gotoSong(index);
-                },
-                trailing: IconButton(
-                    onPressed: () => toggleFav(song.songName),
-                    icon: Icon(
-                      isfav(song.songName)
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      color: isfav(song.songName) ? Colors.red : null,
-                    )),
-              );
+              return refactor.offlineListview(
+                  song: song,
+                  index: index,
+                  goto: gotoSong,
+                  toggle: toggleFav,
+                  isFav: isfav);
             },
           );
         },

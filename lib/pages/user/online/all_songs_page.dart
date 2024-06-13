@@ -1,4 +1,5 @@
 import 'package:beatz_musicplayer/components/continue_playing.dart';
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/favService.dart';
 import 'package:beatz_musicplayer/models/firebase_playlist_provider.dart';
 import 'package:beatz_musicplayer/pages/user/online/online_song_page.dart';
@@ -14,6 +15,7 @@ class SongListPage extends StatefulWidget {
 }
 
 class _SongListPageState extends State<SongListPage> {
+  final Refactor refactor = Refactor();
   final FavoriteService _favoriteService = FavoriteService();
   List<String> _favSongIds = [];
 
@@ -87,54 +89,25 @@ class _SongListPageState extends State<SongListPage> {
                         .map((doc) => {'id': doc.id, ...doc.data()})
                         .toList();
 
-                    return ListView.builder(
-                      itemCount: playlist.length,
-                      itemBuilder: (context, index) {
-                        var song = playlist[index];
-                        final isFavorite = _favSongIds.contains(song['id']);
-                        debugPrint(song['title']);
-
-                        return ListTile(
-                          title: Text(song['title'] ?? 'No Title'),
-                          subtitle: Text(song['artist']),
-                          leading: Image.network(
-                            song['imageUrl'],
-                            height: 50,
-                            width: 50,
-                            fit: BoxFit.cover,
-                          ),
-                          onTap: () {
-                            gotoSong(context, playlist, index);
-                          },
-                          trailing: IconButton(
-                            onPressed: () async {
-                              await toggleFavorite(song);
-                            },
-                            icon: Icon(
-                              isFavorite
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: isFavorite ? Colors.red : null,
-                            ),
-                          ),
-                        );
-                      },
-                    );
+                    return refactor.likeListview(
+                        items: playlist,
+                        onTapf: gotoSong,
+                        ontapt: toggleFavorite,
+                        favSongid: _favSongIds);
                   },
                 ),
               ),
               if (firebasePlaylistProvider.currentSongIndex != null)
-                  ContinuePlaying(
-                      songTitle: firebasePlaylistProvider.playlist[
-                          firebasePlaylistProvider.currentSongIndex!]['title'],
-                      artist: firebasePlaylistProvider.playlist[
-                          firebasePlaylistProvider.currentSongIndex!]['artist'],
-                      imageUrl: firebasePlaylistProvider.playlist[
-                          firebasePlaylistProvider.currentSongIndex!]['imageUrl'],
-                      onPlayPause: firebasePlaylistProvider.pauseOrResume,
-                      onNext: firebasePlaylistProvider.playNextSong,
-                      isPlaying: firebasePlaylistProvider.isPlaying)
-                
+                ContinuePlaying(
+                    songTitle: firebasePlaylistProvider.playlist[
+                        firebasePlaylistProvider.currentSongIndex!]['title'],
+                    artist: firebasePlaylistProvider.playlist[
+                        firebasePlaylistProvider.currentSongIndex!]['artist'],
+                    imageUrl: firebasePlaylistProvider.playlist[
+                        firebasePlaylistProvider.currentSongIndex!]['imageUrl'],
+                    onPlayPause: firebasePlaylistProvider.pauseOrResume,
+                    onNext: firebasePlaylistProvider.playNextSong,
+                    isPlaying: firebasePlaylistProvider.isPlaying)
             ],
           );
         },

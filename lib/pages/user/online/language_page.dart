@@ -1,4 +1,5 @@
 import 'package:beatz_musicplayer/components/continue_playing.dart';
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/favService.dart';
 import 'package:beatz_musicplayer/models/firebase_playlist_provider.dart';
 import 'package:beatz_musicplayer/pages/user/online/online_song_page.dart';
@@ -16,6 +17,7 @@ class LanguagePage extends StatefulWidget {
 }
 
 class _LanguagePageState extends State<LanguagePage> {
+  final Refactor refactor = Refactor();
   FirebasePlaylistProvider firebasePlaylistProvider =
       FirebasePlaylistProvider();
   final FavoriteService favoriteService = FavoriteService();
@@ -96,31 +98,11 @@ class _LanguagePageState extends State<LanguagePage> {
                           return song;
                         },
                       ).toList();
-                      return ListView.builder(
-                        itemCount: songs.length,
-                        itemBuilder: (context, index) {
-                          var song = songs[index];
-                          final isFav = _favSongId.contains(song['id']);
-                          return ListTile(
-                            title: Text(song['title']),
-                            subtitle: Text(song['artist']),
-                            leading: Image.network(song['imageUrl']),
-                            onTap: () {
-                              gotoSong(context, songs, index);
-                            },
-                            trailing: IconButton(
-                                onPressed: () async {
-                                  await toggleFav(song);
-                                },
-                                icon: Icon(
-                                  isFav
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: isFav ? Colors.red : null,
-                                )),
-                          );
-                        },
-                      );
+                      return refactor.likeListview(
+                          items: songs,
+                          onTapf: gotoSong,
+                          ontapt: toggleFav,
+                          favSongid: _favSongId);
                     },
                   ),
                 ),

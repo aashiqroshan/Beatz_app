@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:beatz_musicplayer/models/song.dart';
+import 'package:beatz_musicplayer/pages/user/offline/song_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,6 +17,18 @@ class OfflineSearch extends StatefulWidget {
 class _OfflineSearchState extends State<OfflineSearch> {
   TextEditingController searchController = TextEditingController();
   String searchQuery = '';
+  late PlaylistProvider playlistProvider;
+
+  void gotoSong(int songIndex) {
+    playlistProvider.currentSongIndex = songIndex;
+    playlistProvider.play();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SongPage(),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final songBox = Hive.box<Song>('Box');
@@ -28,14 +42,14 @@ class _OfflineSearchState extends State<OfflineSearch> {
               TextField(
                 controller: searchController,
                 decoration: InputDecoration(
-                    label: Text('Search songs'),
-                    border: OutlineInputBorder(),
+                    label: const Text('Search songs'),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                         onPressed: () {
                           searchController.clear();
                           searchQuery = '';
                         },
-                        icon: Icon(Icons.clear))),
+                        icon: const Icon(Icons.clear))),
                 onChanged: (value) {
                   setState(() {
                     searchQuery = value;
@@ -77,6 +91,9 @@ class _OfflineSearchState extends State<OfflineSearch> {
                           width: 50,
                           fit: BoxFit.cover,
                         ),
+                        onTap: () {
+                          gotoSong(index);
+                        },
                         trailing: IconButton(
                             onPressed: () {
                               setState(() {

@@ -1,4 +1,5 @@
 import 'package:beatz_musicplayer/components/continue_playing.dart';
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/favService.dart';
 import 'package:beatz_musicplayer/models/firebase_playlist_provider.dart';
 import 'package:beatz_musicplayer/pages/user/online/online_song_page.dart';
@@ -15,6 +16,7 @@ class GenrePage extends StatefulWidget {
 }
 
 class _GenrePageState extends State<GenrePage> {
+  final Refactor refactor = Refactor();
   final FavoriteService favoriteService = FavoriteService();
   FirebasePlaylistProvider firebasePlaylistProvider =
       FirebasePlaylistProvider();
@@ -95,31 +97,11 @@ class _GenrePageState extends State<GenrePage> {
                           return song;
                         },
                       ).toList();
-                      return ListView.builder(
-                        itemCount: songs.length,
-                        itemBuilder: (context, index) {
-                          var song = songs[index];
-                          final isFav = _favSongIds.contains(song['id']);
-                          return ListTile(
-                            title: Text(song['title']),
-                            subtitle: Text(song['artist']),
-                            leading: Image.network(song['imageUrl']),
-                            onTap: () {
-                              gotoSong(context, songs, index);
-                            },
-                            trailing: IconButton(
-                                onPressed: () async {
-                                  await toggleFav(song);
-                                },
-                                icon: Icon(
-                                  isFav
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: isFav ? Colors.red : null,
-                                )),
-                          );
-                        },
-                      );
+                      return refactor.likeListview(
+                          items: songs,
+                          onTapf: gotoSong,
+                          ontapt: toggleFav,
+                          favSongid: _favSongIds);
                     },
                   ),
                 ),
@@ -130,7 +112,8 @@ class _GenrePageState extends State<GenrePage> {
                       artist: firebasePlaylistProvider.playlist[
                           firebasePlaylistProvider.currentSongIndex!]['artist'],
                       imageUrl: firebasePlaylistProvider.playlist[
-                          firebasePlaylistProvider.currentSongIndex!]['imageUrl'],
+                              firebasePlaylistProvider.currentSongIndex!]
+                          ['imageUrl'],
                       onPlayPause: firebasePlaylistProvider.pauseOrResume,
                       onNext: firebasePlaylistProvider.playNextSong,
                       isPlaying: firebasePlaylistProvider.isPlaying)

@@ -1,3 +1,4 @@
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/pages/user/online/genre_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class GenreList extends StatefulWidget {
 }
 
 class _GenreListState extends State<GenreList> {
+  final Refactor refactor = Refactor();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,19 +42,9 @@ class _GenreListState extends State<GenreList> {
             );
           }
 
-          return ListView.builder(
-            itemCount: genre.length,
-            itemBuilder: (context, index) {
-              final genres = genre[index];
-              return ListTile(
-                title: Text(genres),
-                onTap: () {
-                  Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => GenrePage(genres: genres),)
-                  );
-                },
-              );
-            },
+          return refactor.laglistviewbuilder(
+            items: genre,
+            pageReq: (genre) => GenrePage(genres: genre),
           );
         },
       ),

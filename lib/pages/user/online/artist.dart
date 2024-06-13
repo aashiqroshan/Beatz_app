@@ -1,3 +1,4 @@
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/pages/user/online/artist_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,13 @@ class ArtistList extends StatefulWidget {
 }
 
 class _ArtistListState extends State<ArtistList> {
+  final Refactor refactor = Refactor();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Artist list'),),
+      appBar: AppBar(
+        title: const Text('Artist list'),
+      ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance.collection('Songs').snapshots(),
         builder: (context, snapshot) {
@@ -38,17 +42,9 @@ class _ArtistListState extends State<ArtistList> {
             );
           }
 
-          return ListView.builder(
-            itemCount: artist.length,
-            itemBuilder: (context, index) {
-              final artists = artist[index];
-              return ListTile(
-                title: Text(artists),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ArtistPage(artist: artists),));
-                },
-              );
-            },
+          return refactor.laglistviewbuilder(
+            items: artist,
+            pageReq: (artist) => ArtistPage(artist: artist),
           );
         },
       ),

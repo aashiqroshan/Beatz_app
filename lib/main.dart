@@ -1,6 +1,7 @@
 import 'package:beatz_musicplayer/components/bottm_navigator.dart';
 import 'package:beatz_musicplayer/firebase_options.dart';
 import 'package:beatz_musicplayer/models/firebase_playlist_provider.dart';
+import 'package:beatz_musicplayer/models/offline_playlist_model.dart';
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:beatz_musicplayer/models/song.dart';
 import 'package:beatz_musicplayer/themes/theme_provider.dart';
@@ -14,11 +15,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(SongAdapter());
+  Hive.registerAdapter(PlaylistAdapter());
   await Hive.openBox<Song>('Box');
   await Hive.openBox<String>('favBox');
+  await Hive.openBox<Playlist>('playlistBox');
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MultiProvider(
       providers: [

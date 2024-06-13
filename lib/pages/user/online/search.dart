@@ -1,3 +1,4 @@
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/favService.dart';
 import 'package:beatz_musicplayer/models/firebase_playlist_provider.dart';
 import 'package:beatz_musicplayer/pages/user/online/online_song_page.dart';
@@ -13,6 +14,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final Refactor refactor = Refactor();
   late String _searchQuery = '';
   final FavoriteService favoriteService = FavoriteService();
   List<String> _favSongsId = [];
@@ -93,41 +95,17 @@ class _SearchPageState extends State<SearchPage> {
                 );
               }
 
-              var songs = snapshot.data!.docs.where((song) =>
-                  song['title'].toLowerCase().contains(_searchQuery) ||
-                  song['artist'].toLowerCase().contains(_searchQuery)).toList();
-              return ListView.builder(
-                itemCount: songs.length,
-                itemBuilder: (context, index) {
-                  var song = songs[index].data();
-                  song['id'] = songs[index].id;
-                  final isFav = _favSongsId.contains(song['id']);
-                  return ListTile(
-                    title: Text(
-                      song['title'],
-                    ),
-                    subtitle: Text(song['artist']),
-                    leading: Image.network(
-                      song['imageUrl'],
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                    onTap: () {
-                      gotoSong(context, songs.map((doc) => doc.data()).toList(),
-                          index);
-                    },
-                    trailing: IconButton(
-                        onPressed: () async {
-                          await toggleFav(song);
-                        },
-                        icon: Icon(
-                          isFav ? Icons.favorite : Icons.favorite_border,
-                          color: isFav ? Colors.red : null,
-                        )),
-                  );
-                },
-              );
+              var songs = snapshot.data!.docs
+                  .where((song) =>
+                      song['title'].toLowerCase().contains(_searchQuery) ||
+                      song['artist'].toLowerCase().contains(_searchQuery))
+                  .toList();
+              var songlist = songs.map((doc) => doc.data()).toList();
+              return refactor.likeListview(
+                  items: songlist,
+                  onTapf: gotoSong,
+                  ontapt: toggleFav,
+                  favSongid: _favSongsId);
             },
           ))
         ],
