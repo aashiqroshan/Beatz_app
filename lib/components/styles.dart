@@ -1,8 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:beatz_musicplayer/models/song.dart';
+import 'package:flutter/widgets.dart';
 
 class Refactor {
   Widget likeListview(
@@ -16,13 +15,10 @@ class Refactor {
         final item = items[index];
         final isFav = favSongid.contains(item['id']);
         return ListTile(
-          title: Text(item['title']),
+          title: titletext(item['title']),
           subtitle: Text(item['artist']),
-          leading: Image.network(
+          leading: imagecropme(
             item['imageUrl'],
-            height: 50,
-            width: 50,
-            fit: BoxFit.cover,
           ),
           onTap: () {
             onTapf(context, items, index);
@@ -73,9 +69,16 @@ class Refactor {
   Widget settings(
       {required BuildContext context,
       required String title,
-      required IconData icons}) {
+      required IconData icons,
+      required Widget pageReq}) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => pageReq,
+            ));
+      },
       child: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondary,
@@ -107,16 +110,85 @@ class Refactor {
       required Function toggle,
       required Function(String) isFav}) {
     return ListTile(
-      leading: Image.file(
-        File(song.albumArtImagePath),
-        fit: BoxFit.cover,
-        width: 50,
-        height: 50,
+      leading: Container(
+        decoration:
+            BoxDecoration(borderRadius: BorderRadius.circular(8), boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3))
+        ]),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.file(
+              File(song.albumArtImagePath),
+              fit: BoxFit.cover,
+              height: 50,
+              width: 50,
+            )),
       ),
-      title: Text(song.songName),
+      title: titletext(song.songName),
       subtitle: Text(song.artistName),
       onTap: () => goto(index),
-      trailing: IconButton(onPressed: () => toggle(song.songName), icon: Icon(isFav(song.songName) ? Icons.favorite : Icons.favorite_border, color: isFav(song.songName) ? Colors.red : null,)),
+      trailing: IconButton(
+          onPressed: () => toggle(song.songName),
+          icon: Icon(
+            isFav(song.songName) ? Icons.favorite : Icons.favorite_border,
+            color: isFav(song.songName) ? Colors.red : null,
+          )),
+    );
+  }
+
+  Widget boldfontstyle(String abc) {
+    return Text(
+      abc,
+      style: const TextStyle(
+          fontFamily: 'Poppins', fontSize: 25, fontWeight: FontWeight.w600),
+    );
+  }
+
+  Widget titletext(String abc) {
+    return Text(
+      abc,
+      style:
+          const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w600),
+    );
+  }
+
+  Widget imagecropme(String src) {
+    return Container(
+      decoration:
+          BoxDecoration(borderRadius: BorderRadius.circular(8), boxShadow: [
+        BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3))
+      ]),
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.network(
+            src,
+            fit: BoxFit.cover,
+            height: 50,
+            width: 50,
+          )),
+    );
+  }
+
+  Widget boldfonttxt(String abc) {
+    return Text(
+      abc,
+      style:
+          const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w600),
+    );
+  }
+
+  PreferredSizeWidget appbartitles(String abc) {
+    return AppBar(
+      title: Text(abc,style: const TextStyle(fontWeight: FontWeight.w600,fontFamily: 'Poppins'),),
+      centerTitle: true,
     );
   }
 }

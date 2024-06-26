@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:beatz_musicplayer/models/song.dart';
 import 'package:beatz_musicplayer/pages/user/offline/song_page.dart';
@@ -18,6 +19,7 @@ class _OfflineSearchState extends State<OfflineSearch> {
   TextEditingController searchController = TextEditingController();
   String searchQuery = '';
   late PlaylistProvider playlistProvider;
+  final Refactor refactor = Refactor();
 
   void gotoSong(int songIndex) {
     playlistProvider.currentSongIndex = songIndex;
@@ -34,7 +36,7 @@ class _OfflineSearchState extends State<OfflineSearch> {
     final songBox = Hive.box<Song>('Box');
     final favBox = Hive.box<String>('favBox');
     return Scaffold(
-        appBar: AppBar(),
+        appBar: refactor.appbartitles('Seach songs'),
         body: Padding(
           padding: const EdgeInsets.all(25),
           child: Column(

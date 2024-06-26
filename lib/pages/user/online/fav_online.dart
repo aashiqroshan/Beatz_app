@@ -1,4 +1,5 @@
 import 'package:beatz_musicplayer/components/continue_playing.dart';
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/favService.dart';
 import 'package:beatz_musicplayer/models/firebase_playlist_provider.dart';
 import 'package:beatz_musicplayer/pages/user/online/online_song_page.dart';
@@ -15,6 +16,7 @@ class FavOnline extends StatefulWidget {
 class _FavOnlineState extends State<FavOnline> {
   final FavoriteService _favoriteService = FavoriteService();
   List<Map<String, dynamic>> _favSong = [];
+  final Refactor refactor = Refactor();
 
   @override
   void initState() {
@@ -59,7 +61,7 @@ class _FavOnlineState extends State<FavOnline> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Favorite Songs')),
+        appBar: refactor.appbartitles('Favorite Songs'),
         body: Consumer<FirebasePlaylistProvider>(
           builder: (context, firebasePlaylistProvider, child) {
             return Column(
@@ -75,20 +77,15 @@ class _FavOnlineState extends State<FavOnline> {
                             final song = _favSong[index];
                             debugPrint('${_favSong[0]}');
                             final albumArtImagePath = song['imageUrl'] ?? '';
-                            final songName = song['title'] ?? 'Unknown Song';
+                            final songName = song['title'];
                             final artistName =
                                 song['artist'] ?? 'Unknown Artist';
 
                             return ListTile(
                               leading: albumArtImagePath.isEmpty
                                   ? const Icon(Icons.music_note, size: 50)
-                                  : Image.network(
-                                      albumArtImagePath,
-                                      height: 50,
-                                      width: 50,
-                                      fit: BoxFit.cover,
-                                    ),
-                              title: Text(songName),
+                                  : refactor.imagecropme(albumArtImagePath),
+                              title: refactor.boldfonttxt(songName),
                               subtitle: Text(artistName),
                               trailing: IconButton(
                                 onPressed: () async {

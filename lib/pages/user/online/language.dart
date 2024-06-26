@@ -15,9 +15,7 @@ class _LanguageListState extends State<LanguageList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Language list'),
-      ),
+      appBar: refactor.appbartitles('Language list'),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance.collection('Songs').snapshots(),
         builder: (context, snapshot) {

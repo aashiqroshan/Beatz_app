@@ -14,10 +14,10 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final Refactor refactor = Refactor();
   late String _searchQuery = '';
   final FavoriteService favoriteService = FavoriteService();
   List<String> _favSongsId = [];
+  final Refactor refactor = Refactor();
 
   @override
   void initState() {
@@ -29,9 +29,12 @@ class _SearchPageState extends State<SearchPage> {
     try {
       List<Map<String, dynamic>> favSongs =
           await favoriteService.fetchFavSongs();
+      debugPrint('successfully fetched fav ');
       setState(() {
         _favSongsId = favSongs.map((song) => song['id'] as String).toList();
       });
+      debugPrint('Favorite song IDs: $_favSongsId');
+      debugPrint(_favSongsId.length.toString());
     } catch (e) {
       debugPrint('error in search for getting songs');
     }
@@ -40,10 +43,18 @@ class _SearchPageState extends State<SearchPage> {
   Future<void> toggleFav(Map<String, dynamic> song) async {
     if (_favSongsId.contains(song['id'])) {
       await favoriteService.removeFromFav(song['id']);
+      setState(() {
+        _favSongsId.remove(song['id']);
+      });
     } else {
       await favoriteService.addTofav(song);
+      setState(() {
+        _favSongsId.add(song['id']);
+      });
     }
-    fetchFavSongs();
+    setState(() {
+      fetchFavSongs();
+    });
   }
 
   void gotoSong(BuildContext context, List<Map<String, dynamic>> playlist,
@@ -62,9 +73,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search songs'),
-      ),
+      appBar: refactor.appbartitles('Search songs!'),
       body: Column(
         children: [
           Padding(
@@ -81,33 +90,61 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           Expanded(
-              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection('Songs').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text('Error : ${snapshot.error}'),
-                );
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream:
+                  FirebaseFirestore.instance.collection('Songs').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error : ${snapshot.error}'),
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-              var songs = snapshot.data!.docs
-                  .where((song) =>
-                      song['title'].toLowerCase().contains(_searchQuery) ||
-                      song['artist'].toLowerCase().contains(_searchQuery))
-                  .toList();
-              var songlist = songs.map((doc) => doc.data()).toList();
-              return refactor.likeListview(
-                  items: songlist,
-                  onTapf: gotoSong,
-                  ontapt: toggleFav,
-                  favSongid: _favSongsId);
-            },
-          ))
+                var songs = snapshot.data!.docs
+                    .where((song) =>
+                        song['title'].toLowerCase().contains(_searchQuery) ||
+                        song['artist'].toLowerCase().contains(_searchQuery))
+                    .toList();
+                var songlist = songs.map((doc) {
+                  var song = doc.data();
+                  song['id'] = doc.id;
+                  return song;
+                }).toList();
+
+                return ListView.builder(
+                  itemCount: songlist.length,
+                  itemBuilder: (context, index) {
+                    final song = songlist[index];
+                    debugPrint(song['title']);
+                    debugPrint(song['id']);
+                    final isFav = _favSongsId.contains(song['id']);
+                    return ListTile(
+                      title: refactor.titletext(song['title']),
+                      subtitle: Text(song['artist']),
+                      leading: refactor.imagecropme(song['imageUrl']),
+                      onTap: () {
+                        gotoSong(context, songlist, index);
+                      },
+                      trailing: IconButton(
+                        onPressed: () async {
+                          await toggleFav(song);
+                        },
+                        icon: Icon(
+                          isFav ? Icons.favorite : Icons.favorite_border,
+                          color: isFav ? Colors.red : null,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

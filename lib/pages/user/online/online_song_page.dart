@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/favService.dart';
 import 'package:beatz_musicplayer/models/firebase_playlist_provider.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class OnlineSongPage extends StatefulWidget {
 }
 
 class _OnlineSongPageState extends State<OnlineSongPage> {
+  final Refactor refactor = Refactor();
   String formatTime(Duration duration) {
     String twoDigitSeconds =
         duration.inSeconds.remainder(60).toString().padLeft(2, "0");
@@ -42,7 +44,9 @@ class _OnlineSongPageState extends State<OnlineSongPage> {
     } else {
       await favoriteService.addTofav(song);
     }
-    fetchFavSong();
+    setState(() {
+      fetchFavSong();
+    });
   }
 
   @override
@@ -82,6 +86,9 @@ class _OnlineSongPageState extends State<OnlineSongPage> {
       nextIndex = (widget.songIndex + 1) % widget.playlist.length;
     }
     value.playSong(widget.playlist[nextIndex], nextIndex);
+    setState(() {
+      currentSongIndex = nextIndex;
+    });
   }
 
   void playPrevious(FirebasePlaylistProvider value) {
@@ -96,6 +103,9 @@ class _OnlineSongPageState extends State<OnlineSongPage> {
       }
     }
     value.playSong(widget.playlist[previousIndex], previousIndex);
+    setState(() {
+      currentSongIndex = previousIndex;
+    });
   }
 
   @override
@@ -119,7 +129,7 @@ class _OnlineSongPageState extends State<OnlineSongPage> {
                           Navigator.of(context).pop();
                         },
                         icon: const Icon(Icons.arrow_back)),
-                    const Text('Online Player'),
+                    refactor.boldfontstyle('Online PLayer'),
                     IconButton(onPressed: () {}, icon: const Icon(Icons.menu))
                   ],
                 ),
@@ -139,12 +149,8 @@ class _OnlineSongPageState extends State<OnlineSongPage> {
                             offset: const Offset(0, 3))
                       ]),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      currentSong['imageUrl'],
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                      borderRadius: BorderRadius.circular(8),
+                      child: refactor.imagecropme(currentSong['imageUrl'])),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(25),
@@ -177,7 +183,7 @@ class _OnlineSongPageState extends State<OnlineSongPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(formatTime(value.currentDuration)),
+                      refactor.boldfonttxt(formatTime(value.currentDuration)),
                       IconButton(
                           onPressed: toggleshuffle,
                           icon: Icon(
@@ -190,7 +196,7 @@ class _OnlineSongPageState extends State<OnlineSongPage> {
                             Icons.repeat,
                             color: _isRepeat ? Colors.red : Colors.black,
                           )),
-                      Text(formatTime(value.totalDuration))
+                      refactor.boldfonttxt(formatTime(value.totalDuration))
                     ],
                   ),
                 ),

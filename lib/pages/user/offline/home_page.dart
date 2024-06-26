@@ -144,10 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 }),
-                const Text(
-                  'Welcome user!',
-                  style: TextStyle(fontSize: 25),
-                ),
+                refactor.boldfontstyle('Welcome User!')
               ],
             ),
             Expanded(

@@ -1,16 +1,16 @@
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AddSongsToPlaylist extends StatelessWidget {
-  const AddSongsToPlaylist({super.key, required this.playlistId});
+  AddSongsToPlaylist({super.key, required this.playlistId});
   final String playlistId;
+  final Refactor refactor = Refactor();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Songs to Playlist'),
-      ),
+      appBar: refactor.appbartitles('Add songs to Playlist'),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('Songs').snapshots(),
         builder: (context, snapshot) {
@@ -35,7 +35,7 @@ class AddSongsToPlaylist extends StatelessWidget {
               return ListTile(
                 title: Text(song['title']),
                 subtitle: Text(song['artist']),
-                leading: Image.network(song['imageUrl']),
+                leading: refactor.imagecropme(song['imageUrl']),
                 trailing: IconButton(
                     onPressed: () {
                       FirebaseFirestore.instance

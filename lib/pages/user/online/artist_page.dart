@@ -60,9 +60,7 @@ class _ArtistPageState extends State<ArtistPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.artist),
-        ),
+        appBar: refactor.appbartitles(widget.artist),
         body: Consumer<FirebasePlaylistProvider>(
           builder: (context, firebasePlaylistProvider, child) {
             return Column(

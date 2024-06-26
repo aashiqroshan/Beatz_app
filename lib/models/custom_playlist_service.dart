@@ -14,6 +14,16 @@ class CustomPlaylistService {
     }
   }
 
+  Future<void> createadminplaylist(String name, String? imageUrl) async {
+    try {
+      await _firestore
+          .collection('AdminPlaylist')
+          .add({'name': name, 'imageUrl': imageUrl, 'songs': []});
+    } catch (e) {
+      debugPrint('Error creating playlist: $e');
+    }
+  }
+
   Future<void> addSongToPlaylist(String playlistId, String songId) async {
     try {
       DocumentReference playlistRef =

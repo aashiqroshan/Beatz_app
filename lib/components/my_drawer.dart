@@ -1,5 +1,5 @@
 import 'package:beatz_musicplayer/pages/loginss/login.dart';
-import 'package:beatz_musicplayer/pages/settings.dart';
+import 'package:beatz_musicplayer/settings_pages/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

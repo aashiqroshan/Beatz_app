@@ -1,4 +1,5 @@
 import 'package:beatz_musicplayer/components/continue_playing.dart';
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/custom_playlist_service.dart';
 import 'package:beatz_musicplayer/models/firebase_playlist_provider.dart';
 import 'package:beatz_musicplayer/pages/user/online/add_songs_to_playlist.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 class PlaylistPage extends StatelessWidget {
   PlaylistPage({super.key, required this.playlistId});
   final String playlistId;
+  final Refactor refactor = Refactor();
   final CustomPlaylistService customPlaylistService = CustomPlaylistService();
 
   void gotoSong(BuildContext context, List<Map<String, dynamic>> playlist,
@@ -29,9 +31,7 @@ class PlaylistPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseplay = Provider.of<FirebasePlaylistProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Playlist'),
-      ),
+      appBar: refactor.appbartitles('PLaylists'),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(
           bottom: 65,
@@ -113,7 +113,7 @@ class PlaylistPage extends StatelessWidget {
                         return ListTile(
                             title: Text(songData['title']),
                             subtitle: Text(songData['artist']),
-                            leading: Image.network(songData['imageUrl']),
+                            leading: refactor.imagecropme(songData['imageUrl']),
                             trailing: IconButton(
                                 onPressed: () {
                                   customPlaylistService.removeSongFromPlaylist(

@@ -1,4 +1,8 @@
 import 'package:beatz_musicplayer/components/styles.dart';
+import 'package:beatz_musicplayer/settings_pages/privacy.dart';
+import 'package:beatz_musicplayer/settings_pages/share.dart';
+import 'package:beatz_musicplayer/settings_pages/t&c.dart';
+import 'package:beatz_musicplayer/settings_pages/version.dart';
 import 'package:beatz_musicplayer/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,7 +25,7 @@ class Settings extends StatelessWidget {
           ),
           const CircleAvatar(
             maxRadius: 80,
-            backgroundImage: AssetImage('assets/images/tamil.jpeg'),
+            backgroundImage: AssetImage('assets/images/me.jpg'),
           ),
           Container(
             decoration: BoxDecoration(
@@ -32,10 +36,7 @@ class Settings extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Dark Mode',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                refactor.boldfonttxt('Dark Mode'),
                 Switch(
                   value: Provider.of<ThemeProvider>(context, listen: false)
                       .isDarkMode,
@@ -46,12 +47,26 @@ class Settings extends StatelessWidget {
               ],
             ),
           ),
-          refactor.settings(context: 
-              context,title: 'Terms & Conditions',icons:  FontAwesomeIcons.scroll),
-          refactor.settings(context: 
-              context,title:  'Privacy Policy',icons: FontAwesomeIcons.shieldHalved),
-          refactor.settings( context: context,title:  'Share App',icons: FontAwesomeIcons.share),
-          refactor.settings(context: context,title: 'Version 1.12.6',icons:  Icons.check),
+          refactor.settings(
+              context: context,
+              title: 'Terms & Conditions',
+              icons: FontAwesomeIcons.scroll,
+              pageReq: const TermsConditions()),
+          refactor.settings(
+              context: context,
+              title: 'Privacy Policy',
+              icons: FontAwesomeIcons.shieldHalved,
+              pageReq: const PrivacyPolicy()),
+          refactor.settings(
+              context: context,
+              title: 'Share App',
+              icons: FontAwesomeIcons.share,
+              pageReq: const Sharethis()),
+          refactor.settings(
+              context: context,
+              title: 'Version 1.12.6',
+              icons: Icons.check,
+              pageReq: const Versionpage()),
         ],
       ),
     );

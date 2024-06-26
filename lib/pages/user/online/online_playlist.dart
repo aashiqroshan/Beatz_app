@@ -1,4 +1,5 @@
 import 'package:beatz_musicplayer/components/create_playlist.dart';
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/custom_playlist_service.dart';
 import 'package:beatz_musicplayer/pages/user/online/all_songs_page.dart';
 import 'package:beatz_musicplayer/pages/user/online/artist.dart';
@@ -17,6 +18,7 @@ class OnlinePlaylist extends StatefulWidget {
 }
 
 class _OnlinePlaylistState extends State<OnlinePlaylist> {
+  final Refactor refactor = Refactor();
   CustomPlaylistService customPlaylistService = CustomPlaylistService();
   void likedsongsfunction() {
     Navigator.of(context)
@@ -81,9 +83,7 @@ class _OnlinePlaylistState extends State<OnlinePlaylist> {
   Widget build(BuildContext context) {
     final playlisttypes = getplaylisttypes();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Playlist'),
-      ),
+      appBar: refactor.appbartitles('PLaylists'),
       floatingActionButton: Container(
         margin: const EdgeInsets.all(10),
         width: 100,
@@ -109,11 +109,25 @@ class _OnlinePlaylistState extends State<OnlinePlaylist> {
               final tapfuntions = playlisttypes[index]['ontap'] as VoidCallback;
               return ListTile(
                 contentPadding: const EdgeInsets.all(15),
-                leading: Image.asset(
-                  typeImage,
-                  height: 50,
-                  width: 50,
-                  fit: BoxFit.cover,
+                leading: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3))
+                      ]),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      typeImage,
+                      height: 50,
+                      width: 50,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 title: Text(
                   typeName,
@@ -153,7 +167,16 @@ class _OnlinePlaylistState extends State<OnlinePlaylist> {
                   return ListTile(
                     contentPadding: const EdgeInsets.all(15),
                     leading: Container(
-                      color: Colors.black,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3))
+                          ],
+                          borderRadius: BorderRadius.circular(8)),
                       height: 50,
                       width: 50,
                       child: const Icon(

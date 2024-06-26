@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/offline_playlist_model.dart';
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:beatz_musicplayer/models/song.dart';
@@ -9,17 +10,21 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-class OfflinePlaylist extends StatelessWidget {
+class OfflinePlaylist extends StatefulWidget {
   const OfflinePlaylist({super.key});
 
+  @override
+  State<OfflinePlaylist> createState() => _OfflinePlaylistState();
+}
+
+class _OfflinePlaylistState extends State<OfflinePlaylist> {
+  final Refactor refactor = Refactor();
   @override
   Widget build(BuildContext context) {
     final playlistBox = Hive.box<Playlist>('playlistBox');
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Playlists'),
-      ),
+      appBar: refactor.appbartitles('Playlists'),
       body: ValueListenableBuilder(
         valueListenable: playlistBox.listenable(),
         builder: (context, Box<Playlist> box, _) {
@@ -33,7 +38,7 @@ class OfflinePlaylist extends StatelessWidget {
             itemBuilder: (context, index) {
               final Playlist playlist = box.getAt(index) as Playlist;
               return ListTile(
-                title: Text(playlist.name),
+                title: refactor.boldfonttxt(playlist.name),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => PlaylistDetailsPage(
@@ -90,9 +95,16 @@ class OfflinePlaylist extends StatelessWidget {
   }
 }
 
-class PlaylistDetailsPage extends StatelessWidget {
+class PlaylistDetailsPage extends StatefulWidget {
   final Playlist playlist;
   const PlaylistDetailsPage({super.key, required this.playlist});
+
+  @override
+  State<PlaylistDetailsPage> createState() => _PlaylistDetailsPageState();
+}
+
+class _PlaylistDetailsPageState extends State<PlaylistDetailsPage> {
+  final Refactor refactor = Refactor();
   @override
   Widget build(BuildContext context) {
     final songBox = Hive.box<Song>('Box');
@@ -100,19 +112,19 @@ class PlaylistDetailsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(playlist.name),
+        title: refactor.boldfonttxt(widget.playlist.name),
         actions: [
           IconButton(
               onPressed: () {
-                showAddSongPlaylist(context, playlist);
+                showAddSongPlaylist(context, widget.playlist);
               },
               icon: const Icon(Icons.add))
         ],
       ),
       body: ListView.builder(
-        itemCount: playlist.songs.length,
+        itemCount: widget.playlist.songs.length,
         itemBuilder: (context, index) {
-          final song = playlist.songs[index];
+          final song = widget.playlist.songs[index];
           return ListTile(
             leading: Image.file(
               File(song.albumArtImagePath),
@@ -132,8 +144,9 @@ class PlaylistDetailsPage extends StatelessWidget {
             },
             trailing: IconButton(
                 onPressed: () {
-                  playlist.songs.removeAt(index);
-                  playlist.save();
+                  widget.playlist.songs.removeAt(index);
+                  widget.playlist.save();
+                  setState(() {});
                 },
                 icon: const Icon(Icons.delete)),
           );
@@ -178,6 +191,7 @@ class PlaylistDetailsPage extends StatelessWidget {
                           onPressed: () {
                             playlist.songs.add(song);
                             playlist.save();
+                            setState(() {});
                           },
                           icon: const Icon(Icons.add)),
                     );

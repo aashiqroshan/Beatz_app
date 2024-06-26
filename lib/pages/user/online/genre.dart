@@ -15,7 +15,7 @@ class _GenreListState extends State<GenreList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: refactor.appbartitles('Genre List'),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance.collection('Songs').snapshots(),
         builder: (context, snapshot) {

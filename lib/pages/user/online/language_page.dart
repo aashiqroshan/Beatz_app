@@ -61,9 +61,7 @@ class _LanguagePageState extends State<LanguagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.language),
-        ),
+        appBar: refactor.appbartitles(widget.language),
         body: Consumer<FirebasePlaylistProvider>(
           builder: (context, firebasePlaylistProvider, child) {
             return Column(

@@ -64,9 +64,7 @@ class _FavOfflineState extends State<FavOffline> {
     final favoriteBox = Hive.box<String>('favBox');
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favorite Songs'),
-      ),
+      appBar: refactor.appbartitles('Favorite Songs'),
       body: ValueListenableBuilder(
         valueListenable: favoriteBox.listenable(),
         builder: (context, Box<String> box, _) {

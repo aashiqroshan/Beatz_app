@@ -60,9 +60,7 @@ class _GenrePageState extends State<GenrePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.genres),
-        ),
+        appBar: refactor.appbartitles(widget.genres),
         body: Consumer<FirebasePlaylistProvider>(
           builder: (context, firebasePlaylistProvider, child) {
             return Column(
