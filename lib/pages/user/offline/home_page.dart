@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:beatz_musicplayer/components/my_drawer.dart';
 import 'package:beatz_musicplayer/components/showdialoguebox.dart';
 import 'package:beatz_musicplayer/components/styles.dart';
@@ -11,7 +9,6 @@ import 'package:beatz_musicplayer/pages/user/offline/song_page.dart';
 import 'package:flutter/material.dart';
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -148,30 +145,34 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             Expanded(
-              child: ValueListenableBuilder(
-                  valueListenable: songBox.listenable(),
-                  builder: (context, Box<Song> box, _) {
-                    if (box.values.isEmpty) {
-                      return const Center(
-                        child: Text('No songs added yet!'),
+                child: ValueListenableBuilder(
+              valueListenable: favoriteBox.listenable(),
+              builder: (context, Box<String> favBox, _) {
+                return ValueListenableBuilder(
+                    valueListenable: songBox.listenable(),
+                    builder: (context, Box<Song> box, _) {
+                      if (box.values.isEmpty) {
+                        return const Center(
+                          child: Text('No songs added yet!'),
+                        );
+                      }
+                      return ListView.builder(
+                        itemCount: box.length,
+                        itemBuilder: (context, index) {
+                          {
+                            final Song song = box.getAt(index) as Song;
+                            return refactor.offlineListview(
+                                song: song,
+                                index: index,
+                                goto: gotoSong,
+                                toggle: toggleFavorite,
+                                isFav: isFavorite);
+                          }
+                        },
                       );
-                    }
-                    return ListView.builder(
-                      itemCount: box.length,
-                      itemBuilder: (context, index) {
-                        {
-                          final Song song = box.getAt(index) as Song;
-                          return refactor.offlineListview(
-                              song: song,
-                              index: index,
-                              goto: gotoSong,
-                              toggle: toggleFavorite,
-                              isFav: isFavorite);
-                        }
-                      },
-                    );
-                  }),
-            ),
+                    });
+              },
+            )),
           ],
         ),
       ),

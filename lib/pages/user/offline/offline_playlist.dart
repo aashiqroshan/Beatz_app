@@ -6,7 +6,6 @@ import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:beatz_musicplayer/models/song.dart';
 import 'package:beatz_musicplayer/pages/user/offline/song_page.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -37,20 +36,34 @@ class _OfflinePlaylistState extends State<OfflinePlaylist> {
             itemCount: box.length,
             itemBuilder: (context, index) {
               final Playlist playlist = box.getAt(index) as Playlist;
-              return ListTile(
-                title: refactor.boldfonttxt(playlist.name),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => PlaylistDetailsPage(
-                      playlist: playlist,
+              return Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).colorScheme.inversePrimary),
+                    height: 50,
+                    width: 50,
+                    child: const Icon(
+                      Icons.music_note,
+                      color: Colors.white,
                     ),
-                  ));
-                },
-                trailing: IconButton(
-                    onPressed: () {
-                      box.deleteAt(index);
-                    },
-                    icon: const Icon(Icons.delete)),
+                  ),
+                  title: refactor.boldfonttxt(playlist.name),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => PlaylistDetailsPage(
+                        playlist: playlist,
+                      ),
+                    ));
+                  },
+                  trailing: IconButton(
+                      onPressed: () {
+                        box.deleteAt(index);
+                      },
+                      icon: const Icon(Icons.delete)),
+                ),
               );
             },
           );
@@ -121,37 +134,53 @@ class _PlaylistDetailsPageState extends State<PlaylistDetailsPage> {
               icon: const Icon(Icons.add))
         ],
       ),
-      body: ListView.builder(
-        itemCount: widget.playlist.songs.length,
-        itemBuilder: (context, index) {
-          final song = widget.playlist.songs[index];
-          return ListTile(
-            leading: Image.file(
-              File(song.albumArtImagePath),
-              fit: BoxFit.cover,
-              height: 50,
-              width: 50,
+      body: widget.playlist.songs.isEmpty
+          ? const Center(
+              child: Text('No Songs added'),
+            )
+          : ListView.builder(
+              itemCount: widget.playlist.songs.length,
+              itemBuilder: (context, index) {
+                final song = widget.playlist.songs[index];
+                return ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3))
+                    ]),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.file(
+                        File(song.albumArtImagePath),
+                        fit: BoxFit.cover,
+                        height: 50,
+                        width: 50,
+                      ),
+                    ),
+                  ),
+                  title: Text(song.songName),
+                  subtitle: Text(song.songName),
+                  onTap: () {
+                    playlistProvider.currentSongIndex =
+                        songBox.values.toList().indexOf(song);
+                    playlistProvider.play();
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const SongPage(),
+                    ));
+                  },
+                  trailing: IconButton(
+                      onPressed: () {
+                        widget.playlist.songs.removeAt(index);
+                        widget.playlist.save();
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.delete)),
+                );
+              },
             ),
-            title: Text(song.songName),
-            subtitle: Text(song.songName),
-            onTap: () {
-              playlistProvider.currentSongIndex =
-                  songBox.values.toList().indexOf(song);
-              playlistProvider.play();
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const SongPage(),
-              ));
-            },
-            trailing: IconButton(
-                onPressed: () {
-                  widget.playlist.songs.removeAt(index);
-                  widget.playlist.save();
-                  setState(() {});
-                },
-                icon: const Icon(Icons.delete)),
-          );
-        },
-      ),
     );
   }
 

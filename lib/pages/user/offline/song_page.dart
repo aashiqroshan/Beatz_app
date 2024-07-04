@@ -18,7 +18,14 @@ class SongPage extends StatelessWidget {
     return Consumer<PlaylistProvider>(
       builder: (context, value, child) {
         final playlist = value.playlist;
+        if (playlist.isEmpty) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            body: SafeArea(child: Center(child: Text('No songs in the playlist!',style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),)),
+          );
+        }
         final currentSong = playlist[value.currentSongIndex ?? 0];
+        final isfavorite = value.isFavorite(currentSong.songName);
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           body: SafeArea(
@@ -57,7 +64,8 @@ class SongPage extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.file(
-                      File(currentSong.albumArtImagePath,
+                      File(
+                        currentSong.albumArtImagePath,
                       ),
                       fit: BoxFit.fill,
                     ),
@@ -79,9 +87,14 @@ class SongPage extends StatelessWidget {
                           Text(currentSong.artistName)
                         ],
                       ),
-                      const Icon(
-                        Icons.favorite,
-                        color: Colors.red,
+                      IconButton(
+                        icon: Icon(
+                          isfavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isfavorite ? Colors.red : null,
+                        ),
+                        onPressed: () {
+                          value.toggleFavorite(currentSong.songName);
+                        },
                       )
                     ],
                   ),

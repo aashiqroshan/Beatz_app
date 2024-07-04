@@ -10,7 +10,7 @@ class TermsConditions extends StatelessWidget {
         title: const Text('Terms & Conditions'),
       ),
       body: const SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

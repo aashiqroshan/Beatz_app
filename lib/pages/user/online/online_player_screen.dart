@@ -269,7 +269,7 @@ class _OnlineScreenState extends State<OnlineScreen> {
                                         topRight: Radius.circular(20)),
                                     child: Image.network(
                                       playlist['imageUrl'],
-                                      height: 180,
+                                      height: 150,
                                       width: double.infinity,
                                       fit: BoxFit.cover,
                                     ),
@@ -292,7 +292,7 @@ class _OnlineScreenState extends State<OnlineScreen> {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   )
                                 ],

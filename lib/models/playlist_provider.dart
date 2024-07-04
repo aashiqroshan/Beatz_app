@@ -6,26 +6,8 @@ import 'package:hive_flutter/adapters.dart';
 
 class PlaylistProvider extends ChangeNotifier {
   late final Box<Song> _songBox;
+  late final Box<String> _favoriteBox;
 
-  // final List<Song> _playlist = [
-  //   Song(
-  //       songName: 'StarBoy',
-  //       artistName: 'The Weeknd',
-  //       albumArtImagePath: 'assets/images/starboy.jpeg',
-  //       audioPath: 'audio/starboy.mp3'),
-  //   Song(
-  //       songName: 'Husn',
-  //       artistName: 'anuv jain',
-  //       albumArtImagePath: 'assets/images/husn.jpeg',
-  //       audioPath: 'audio/starboy.mp3'),
-  //   Song(
-  //       songName: 'Dhundhala',
-  //       artistName: 'yashraj, Dropped Out, Talwiinder',
-  //       albumArtImagePath: 'assets/images/dhundhala.jpeg',
-  //       audioPath: 'audio/dhundhala.mp3')
-  // ];
-
-//this is where the songs will be saved
   final List<Song> _playlist = [];
 
   int? _currentSongIndex;
@@ -44,6 +26,7 @@ class PlaylistProvider extends ChangeNotifier {
 
   void _init() async {
     _songBox = Hive.box<Song>('Box');
+    _favoriteBox = Hive.box<String>('favBox');
     _playlist.addAll(_songBox.values.toList());
     notifyListeners();
   }
@@ -55,7 +38,7 @@ class PlaylistProvider extends ChangeNotifier {
       await _audioPlayer.stop();
       await _audioPlayer.play(DeviceFileSource(path));
       _isPlaying = true;
-    notifyListeners();
+      notifyListeners();
     }
   }
 
@@ -117,6 +100,19 @@ class PlaylistProvider extends ChangeNotifier {
     _audioPlayer.onPlayerComplete.listen((event) {
       playNextSong();
     });
+  }
+
+  void toggleFavorite(String songName) {
+    if (_favoriteBox.containsKey(songName)) {
+      _favoriteBox.delete(songName);
+    } else {
+      _favoriteBox.put(songName, songName);
+    }
+    notifyListeners();
+  }
+
+  bool isFavorite(String songName) {
+    return _favoriteBox.containsKey(songName);
   }
 
   Future<List<Song>> getAllSongs() async {

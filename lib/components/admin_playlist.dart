@@ -24,7 +24,7 @@ class _AdminPlaylistState extends State<AdminPlaylist> {
         type: FileType.custom, allowedExtensions: ['jpg', 'jpeg', 'png']);
     if (result != null) {
       File file = File(result.files.single.path!);
-      return uploadFile(file);
+      return await uploadFile(file);
     }
     return null;
   }
@@ -43,9 +43,12 @@ class _AdminPlaylistState extends State<AdminPlaylist> {
   }
 
   Future<void> createPlaylist() async {
-    if (playlistname.text.isNotEmpty) {
+    if (playlistname.text.isNotEmpty && imageUrl != null) {
       customPlaylistService.createadminplaylist(playlistname.text, imageUrl);
       playlistname.clear();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Image upload failed or is required')));
     }
   }
 
@@ -79,7 +82,10 @@ class _AdminPlaylistState extends State<AdminPlaylist> {
       ),
       actions: [
         ElevatedButton.icon(
-          onPressed: () {
+          onPressed: () async {
+            if (imageUrl != null) {
+              await uploadFile(File(imageUrl!));
+            }
             createPlaylist();
             Navigator.pop(context);
           },

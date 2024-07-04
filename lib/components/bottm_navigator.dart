@@ -1,6 +1,4 @@
-import 'package:beatz_musicplayer/pages/user/online/all_songs_page.dart';
 import 'package:beatz_musicplayer/pages/user/offline/home_page.dart';
-import 'package:beatz_musicplayer/pages/user/library.dart';
 import 'package:beatz_musicplayer/pages/user/online/online_player_screen.dart';
 import 'package:beatz_musicplayer/pages/user/online/online_playlist.dart';
 import 'package:beatz_musicplayer/pages/user/online/search.dart';

@@ -1,1 +1,39 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"beatz-music-app","appId":"1:598457195974:android:88eafa02ff05993516a6c7","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"beatz-music-app","configurations":{"android":"1:598457195974:android:88eafa02ff05993516a6c7","ios":"1:598457195974:ios:7c011ee7f332bc5d16a6c7","macos":"1:598457195974:ios:7c011ee7f332bc5d16a6c7","web":"1:598457195974:web:738e9a2ba64c5b4c16a6c7","windows":"1:598457195974:web:a53cf2242b7ecc8c16a6c7"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "beatz-music-app",
+          "appId": "1:598457195974:android:88eafa02ff05993516a6c7",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "beatz-music-app",
+          "configurations": {
+            "android": "1:598457195974:android:88eafa02ff05993516a6c7",
+            "ios": "1:598457195974:ios:7c011ee7f332bc5d16a6c7",
+            "macos": "1:598457195974:ios:7c011ee7f332bc5d16a6c7",
+            "web": "1:598457195974:web:738e9a2ba64c5b4c16a6c7",
+            "windows": "1:598457195974:web:a53cf2242b7ecc8c16a6c7"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

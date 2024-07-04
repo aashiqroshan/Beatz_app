@@ -1,11 +1,9 @@
 import 'package:beatz_musicplayer/components/bottm_navigator.dart';
-import 'package:beatz_musicplayer/pages/user/offline/home_page.dart';
 import 'package:beatz_musicplayer/pages/admin/admin_page.dart';
 import 'package:beatz_musicplayer/pages/loginss/signup.dart';
 import 'package:beatz_musicplayer/models/firebase_auth_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

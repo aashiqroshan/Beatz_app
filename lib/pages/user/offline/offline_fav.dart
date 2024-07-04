@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:beatz_musicplayer/components/styles.dart';
 import 'package:beatz_musicplayer/models/playlist_provider.dart';
 import 'package:beatz_musicplayer/models/song.dart';
 import 'package:beatz_musicplayer/pages/user/offline/song_page.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -39,6 +36,7 @@ class _FavOfflineState extends State<FavOffline> {
         favoriteBox.put(songId, songId);
       }
     });
+    
   }
 
   bool isfav(String songId) {
